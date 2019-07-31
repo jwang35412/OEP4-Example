@@ -14,6 +14,7 @@ from ontology.interop.Ontology.Runtime import Base58ToAddress
 from ontology.interop.System.Action import RegisterAction
 from ontology.interop.System.Runtime import Log, CheckWitness
 from ontology.interop.System.Storage import GetContext, Get, Put, Delete
+from ontology.libont import elt_in
 ctx = GetContext()
 
 TransferEvent = RegisterAction("transfer", "from", "to", "amount")
@@ -31,6 +32,7 @@ BALANCE_PREFIX = 'BALANCE_PREFIX'
 APPROVE_PREFIX = 'APPROVE_PREFIX'
 SUPPLY_KEY = 'TotalSupply'
 
+STANDARDS = ['OEP4', 'OEP59']
 
 def Main(operation, args):
     if operation == 'name':
@@ -76,6 +78,14 @@ def Main(operation, args):
         owner = args[0]
         spender = args[1]
         return allowance(owner, spender)
+    # OEP-59
+    elif operation == 'supportedStandards':
+        Require(len(args) == 0)
+        return supportedStandards()
+    elif operation == 'supports':
+        Require(len(args) == 1)
+        standard = args[0]
+        return supports(standard)
     # Admin Methods
     elif operation == 'init':
         return init()
@@ -309,3 +319,11 @@ def Require(expr, message="There was an error"):
     if not expr:
         Log(message)
         raise Exception(message)
+        
+# OEP-59
+
+def supportedStandards():
+    return STANDARDS
+    
+def supports(standard):
+    return elt_in(STANDARDS, standard)
