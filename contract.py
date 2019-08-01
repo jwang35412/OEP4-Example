@@ -32,7 +32,7 @@ BALANCE_PREFIX = 'BALANCE_PREFIX'
 APPROVE_PREFIX = 'APPROVE_PREFIX'
 SUPPLY_KEY = 'TotalSupply'
 
-STANDARDS = ['OEP4', 'OEP59']
+STANDARDS = ['OEP-4', 'OEP-59']
 
 def Main(operation, args):
     if operation == 'name':
